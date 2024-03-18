@@ -1,0 +1,32 @@
+name: create-cache
+
+on:
+  schedule:
+    - cron: '0 0 1 * *' # For more: https://crontab.guru/#0_0_1_*_*
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Publish package
+        run: |
+          ./gradlew assemble
+
+      - name: Save the cache
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: ${{ runner.os }}-build

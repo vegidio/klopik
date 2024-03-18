@@ -1,0 +1,49 @@
+[versions]
+android = "8.2.1"
+android-compileSdk = "34"
+android-minSdk = "24"
+coroutines = "1.7.3"
+datetime = "0.5.0"
+detekt = "1.23.5"
+kermit = "2.0.3"
+kotlin = "1.9.21"
+ksoup = "0.1.2"
+ksp = "1.9.21-1.0.15"
+ktlint = "12.0.3"
+ktor = "2.3.6"
+ktorfit = "1.12.0"
+okio = "3.8.0"
+skie = "0.6.1"
+slf4j = "2.0.11"
+
+[plugins]
+android-library = { id = "com.android.library", version.ref = "android" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }
+
+[libraries]
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-js = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core-js", version.ref = "coroutines" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
+kotlin-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+ksoup = { group = "com.fleeksoft.ksoup", name = "ksoup", version.ref = "ksoup" }
+ktor-client-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-engine-apple = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktor-engine-js = { group = "io.ktor", name = "ktor-client-js", version.ref = "ktor" }
+ktor-engine-jvm = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-engine-linux = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-engine-windows = { group = "io.ktor", name = "ktor-client-winhttp", version.ref = "ktor" }
+ktor-serialization-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktorfit = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-lib-light", version.ref = "ktorfit" }
+ktorfit-ksp = { group = "de.jensklingenberg.ktorfit", name = "ktorfit-ksp", version.ref = "ktorfit" }
+okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
+okio-node = { group = "com.squareup.okio", name = "okio-nodefilesystem", version.ref = "okio" }
+skie-annotations = { group = "co.touchlab.skie", name = "configuration-annotations", version.ref = "skie" }
+slf4j = { group = "org.slf4j", name = "slf4j-nop", version.ref = "slf4j" }
