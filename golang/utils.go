@@ -13,6 +13,19 @@ import (
 
 var client = resty.New()
 
+// createRequest is a function that creates a new resty.Request.
+// It takes two parameters: body and headers, both of which are pointers to C.char.
+// The body and headers are optional. If provided, they are set in the request.
+// The function returns a pointer to the created resty.Request.
+//
+// Parameters:
+//   - body: a pointer to a C.char that represents the body of the request. If it's not nil, it will be converted to a
+//     Go string and set in the request.
+//   - headers: a pointer to a C.char that represents the headers of the request in JSON format. If it's not nil, it
+//     will be converted to a Go string, unmarshalled to a map[string]string to be set in the request.
+//
+// Returns:
+//   - a pointer to the created resty.Request.
 func createRequest(body *C.char, headers *C.char) *resty.Request {
 	r := client.R()
 
