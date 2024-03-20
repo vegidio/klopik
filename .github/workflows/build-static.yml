@@ -1,0 +1,83 @@
+name: build-static
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  build-darwin:
+    runs-on: macos-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.1'
+
+      - name: Create static library
+        working-directory: golang
+        run: |
+          GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 go build -buildmode=c-archive -o lib/klopik_darwin_amd64.a .
+          GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 go build -buildmode=c-archive -o lib/klopik_darwin_arm64.a .
+
+      - name: Save artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-darwin
+          path: golang/lib/*.a
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.1'
+
+      - name: Install dependencies
+        run: |
+          sudo apt install -y gcc-aarch64-linux-gnu
+
+      - name: Create static library
+        working-directory: golang
+        run: |
+          GOOS=linux GOARCH=amd64 CGO_ENABLED=1 go build -buildmode=c-archive -o lib/klopik_linux_amd64.a .
+          GOOS=linux GOARCH=arm64 CC=aarch64-linux-gnu-gcc CGO_ENABLED=1 go build -buildmode=c-archive -o lib/klopik_linux_arm64.a .
+
+      - name: Save artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-linux
+          path: golang/lib/*.a
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.1'
+
+      - name: Create static library
+        working-directory: golang
+        run: |
+          set GOARCH=amd64
+          set GOOS=windows
+          set CGO_ENABLED=1
+          go build -buildmode=c-archive -o lib\klopik_windows_amd64.a .
+
+      - name: Save artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-windows
+          path: golang/lib/*.a
