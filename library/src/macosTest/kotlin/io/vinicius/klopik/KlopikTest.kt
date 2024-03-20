@@ -2,9 +2,10 @@ package io.vinicius.klopik
 
 import kotlin.test.Test
 
-class FetchTest {
+class KlopikTest {
     @Test
     fun `HTTP GET result is 200 OK`() {
-        println(helloW())
+        val response = Klopik.get("https://httpbin.org/get")
+        println(response)
     }
 }

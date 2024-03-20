@@ -30,20 +30,20 @@ func createRequest(body *C.char, headers *C.char) *resty.Request {
 	r := client.R()
 
 	if body != nil {
-		r = r.SetBody(getBody(body))
+		r = r.SetBody(getRequestBody(body))
 	}
 	if headers != nil {
-		r = r.SetHeaders(getHeaders(headers))
+		r = r.SetHeaders(getRequestHeaders(headers))
 	}
 
 	return r
 }
 
-func getBody(body *C.char) string {
+func getRequestBody(body *C.char) string {
 	return C.GoString(body)
 }
 
-func getHeaders(headers *C.char) map[string]string {
+func getRequestHeaders(headers *C.char) map[string]string {
 	gHeaders := C.GoString(headers)
 
 	result := make(map[string]interface{})
@@ -58,4 +58,14 @@ func getHeaders(headers *C.char) map[string]string {
 	}
 
 	return stringMap
+}
+
+func getResponseHeaders(headers map[string][]string) *C.char {
+	byteHeaders, err := json.Marshal(headers)
+	if err != nil {
+		return nil
+	}
+
+	jsonHeaders := string(byteHeaders)
+	return C.CString(jsonHeaders)
 }

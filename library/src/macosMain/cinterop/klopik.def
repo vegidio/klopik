@@ -1,4 +1,4 @@
-headers = klopik.h
-staticLibraries = klopik.a
+headers = klopik_002.h
+staticLibraries = klopik_002.a
 compilerOpts = -framework Security
 linkerOpts = -framework Security

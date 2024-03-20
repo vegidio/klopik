@@ -8,7 +8,17 @@ import (
 	"unsafe"
 )
 
-func main() {}
+func main() {
+	//cMethod := C.CString("GET")
+	//cUrl := C.CString("https://httpbin.org/get")
+	//body, size, httpCode, headers, err := Request(cMethod, cUrl, nil, nil)
+	//
+	//fmt.Println("Body", body)
+	//fmt.Println("Size", size)
+	//fmt.Println("HTTP Code", httpCode)
+	//fmt.Println("Headers", C.GoString(headers))
+	//fmt.Println("Error", C.GoString(err))
+}
 
 // Request is a function that takes in four parameters: method, url, body, and headers.
 // It uses these parameters to create an HTTP request and send it to the specified URL.
@@ -26,7 +36,12 @@ func main() {}
 // - a pointer to a C character representing the error message (or nil if there is no error).
 //
 //export Request
-func Request(method *C.char, url *C.char, body *C.char, headers *C.char) (unsafe.Pointer, C.int, *C.char) {
+func Request(
+	method *C.char,
+	url *C.char,
+	body *C.char,
+	headers *C.char) (unsafe.Pointer, C.int, C.int, *C.char, *C.char) {
+
 	gMethod := C.GoString(method)
 	gUrl := C.GoString(url)
 	request := createRequest(body, headers)
@@ -34,11 +49,13 @@ func Request(method *C.char, url *C.char, body *C.char, headers *C.char) (unsafe
 
 	if err != nil {
 		cErr := C.CString(err.Error())
-		return nil, 0, cErr
+		return nil, 0, 0, nil, cErr
 	}
 
 	gBody := resp.Body()
 	cBody := C.CBytes(gBody)
 	cLength := C.int(len(gBody))
-	return cBody, cLength, nil
+	cHttpCode := C.int(resp.StatusCode())
+	cHeaders := getResponseHeaders(resp.Header())
+	return cBody, cLength, cHttpCode, cHeaders, nil
 }
