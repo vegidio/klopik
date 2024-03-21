@@ -1,0 +1,4 @@
+headers = klopik_windows_amd64.h
+staticLibraries = klopik_windows_amd64.a
+compilerOpts = -framework Security
+linkerOpts = -framework Security

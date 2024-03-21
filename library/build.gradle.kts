@@ -11,11 +11,61 @@ kotlin {
     applyDefaultHierarchyTemplate()
 
     // macOS
-    macosArm64() {
+    macosX64 {
         compilations.getByName("main").apply {
             cinterops {
                 val klopik by creating {
-                    defFile("src/macosMain/cinterop/klopik.def")
+                    defFile("src/macosMain/cinterop/klopik_amd64.def")
+                    compilerOpts("-I" + rootProject.file("golang/lib"))
+                    extraOpts("-libraryPath", rootProject.file("golang/lib"))
+                }
+            }
+        }
+    }
+
+    macosArm64 {
+        compilations.getByName("main").apply {
+            cinterops {
+                val klopik by creating {
+                    defFile("src/macosMain/cinterop/klopik_arm64.def")
+                    compilerOpts("-I" + rootProject.file("golang/lib"))
+                    extraOpts("-libraryPath", rootProject.file("golang/lib"))
+                }
+            }
+        }
+    }
+
+    // Linux
+    linuxX64 {
+        compilations.getByName("main").apply {
+            cinterops {
+                val klopik by creating {
+                    defFile("src/linuxMain/cinterop/klopik_amd64.def")
+                    compilerOpts("-I" + rootProject.file("golang/lib"))
+                    extraOpts("-libraryPath", rootProject.file("golang/lib"))
+                }
+            }
+        }
+    }
+
+    linuxArm64 {
+        compilations.getByName("main").apply {
+            cinterops {
+                val klopik by creating {
+                    defFile("src/linuxMain/cinterop/klopik_arm64.def")
+                    compilerOpts("-I" + rootProject.file("golang/lib"))
+                    extraOpts("-libraryPath", rootProject.file("golang/lib"))
+                }
+            }
+        }
+    }
+
+    // Windows
+    mingwX64 {
+        compilations.getByName("main").apply {
+            cinterops {
+                val klopik by creating {
+                    defFile("src/mingwMain/cinterop/klopik_amd64.def")
                     compilerOpts("-I" + rootProject.file("golang/lib"))
                     extraOpts("-libraryPath", rootProject.file("golang/lib"))
                 }

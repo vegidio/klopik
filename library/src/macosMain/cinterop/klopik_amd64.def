@@ -1,0 +1,4 @@
+headers = klopik_darwin_amd64.h
+staticLibraries = klopik_darwin_amd64.a
+compilerOpts = -framework Security
+linkerOpts = -framework Security
