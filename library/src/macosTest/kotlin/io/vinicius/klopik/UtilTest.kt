@@ -27,7 +27,7 @@ class UtilTest {
 
     @Test
     fun `deserializeHeaders returns map for multiple JSON string values`() {
-        val headers = """{"Content-Type":["application/json", "application/xml"],"Authorization":["Bearer token"]}"""
+        val headers = """{"Content-Type":["application/json","application/xml"],"Authorization":["Bearer token"]}"""
         val expected = mapOf("Content-Type" to "application/json, application/xml", "Authorization" to "Bearer token")
         assertEquals(expected, deserializeHeaders(headers))
     }

@@ -1,5 +1,7 @@
 package io.vinicius.klopik
 
+import io.vinicius.klopik.model.RequestOptions
+import io.vinicius.klopik.model.Response
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.convert
@@ -13,12 +15,12 @@ import platform.posix.memcpy
 class Klopik {
     companion object {
         /**
-         * Sends a HTTP request.
+         * Sends a request to the specified URL with the specified method and options.
          *
-         * @param method The HTTP method to use for the request; this should be an instance of the `Method` enum.
+         * @param method The HTTP method to use for the request. This is an instance of the `Method` enum.
          * @param url The URL to send the request to.
-         * @param body The body of the request; this is optional and defaults to `null`.
-         * @param headers The headers to include with the request; this is optional and defaults to `null`.
+         * @param options A lambda function with the request options. This object is used to specify the body, headers
+         * and other request parameters (optional).
          *
          * @return A `Response` object containing the response from the server.
          *
@@ -28,14 +30,14 @@ class Klopik {
         fun request(
             method: Method,
             url: String,
-            body: String? = null,
-            headers: Map<String, String>? = null
+            options: RequestOptions.() -> Unit = {}
         ): Response {
+            val op = RequestOptions().apply(options)
             val result = klopik.Request(
                 method = method.value.cstr,
                 url = url.cstr,
-                body = body?.cstr,
-                headers = headers?.let { serializeHeaders(it).cstr }
+                body = op.body?.cstr,
+                headers = op.headers?.let { serializeHeaders(it).cstr }
             )
 
             return result.useContents {
@@ -62,8 +64,8 @@ class Klopik {
          * Sends a GET request to the specified URL.
          *
          * @param url The URL to send the request to.
-         * @param body The body of the request; this is optional and defaults to `null`.
-         * @param headers The headers to include with the request; this is optional and defaults to `null`.
+         * @param options A lambda function with the request options. This object is used to specify the body, headers
+         * and other request parameters (optional).
          *
          * @return A `Response` object containing the response from the server.
          *
@@ -72,16 +74,15 @@ class Klopik {
          */
         fun get(
             url: String,
-            body: String? = null,
-            headers: Map<String, String>? = null
-        ): Response = request(Method.Get, url, body, headers)
+            options: RequestOptions.() -> Unit = {}
+        ): Response = request(Method.Get, url, options)
 
         /**
          * Sends a POST request to the specified URL.
          *
          * @param url The URL to send the request to.
-         * @param body The body of the request; this is optional and defaults to `null`.
-         * @param headers The headers to include with the request; this is optional and defaults to `null`.
+         * @param options A lambda function with the request options. This object is used to specify the body, headers
+         * and other request parameters (optional).
          *
          * @return A `Response` object containing the response from the server.
          *
@@ -90,8 +91,92 @@ class Klopik {
          */
         fun post(
             url: String,
-            body: String? = null,
-            headers: Map<String, String>? = null
-        ): Response = request(Method.Post, url, body, headers)
+            options: RequestOptions.() -> Unit = {}
+        ): Response = request(Method.Post, url, options)
+
+        /**
+         * Sends a PUT request to the specified URL.
+         *
+         * @param url The URL to send the request to.
+         * @param options A lambda function with the request options. This object is used to specify the body, headers
+         * and other request parameters (optional).
+         *
+         * @return A `Response` object containing the response from the server.
+         *
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
+         * message.
+         */
+        fun put(
+            url: String,
+            options: RequestOptions.() -> Unit = {}
+        ): Response = request(Method.Put, url, options)
+
+        /**
+         * Sends a DELETE request to the specified URL.
+         *
+         * @param url The URL to send the request to.
+         * @param options A lambda function with the request options. This object is used to specify the body, headers
+         * and other request parameters (optional).
+         *
+         * @return A `Response` object containing the response from the server.
+         *
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
+         * message.
+         */
+        fun delete(
+            url: String,
+            options: RequestOptions.() -> Unit = {}
+        ): Response = request(Method.Delete, url, options)
+
+        /**
+         * Sends a PATCH request to the specified URL.
+         *
+         * @param url The URL to send the request to.
+         * @param options A lambda function with the request options. This object is used to specify the body, headers
+         * and other request parameters (optional).
+         *
+         * @return A `Response` object containing the response from the server.
+         *
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
+         * message.
+         */
+        fun patch(
+            url: String,
+            options: RequestOptions.() -> Unit = {}
+        ): Response = request(Method.Patch, url, options)
+
+        /**
+         * Sends a HEAD request to the specified URL.
+         *
+         * @param url The URL to send the request to.
+         * @param options A lambda function with the request options. This object is used to specify the body, headers
+         * and other request parameters (optional).
+         *
+         * @return A `Response` object containing the response from the server.
+         *
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
+         * message.
+         */
+        fun head(
+            url: String,
+            options: RequestOptions.() -> Unit = {}
+        ): Response = request(Method.Head, url, options)
+
+        /**
+         * Sends a OPTIONS request to the specified URL.
+         *
+         * @param url The URL to send the request to.
+         * @param options A lambda function with the request options. This object is used to specify the body, headers
+         * and other request parameters (optional).
+         *
+         * @return A `Response` object containing the response from the server.
+         *
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
+         * message.
+         */
+        fun options(
+            url: String,
+            options: RequestOptions.() -> Unit = {}
+        ): Response = request(Method.Options, url, options)
     }
 }

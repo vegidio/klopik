@@ -1,14 +1,25 @@
-package io.vinicius.klopik
+package io.vinicius.klopik.model
 
+import io.vinicius.klopik.KlopikException
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
 
+/**
+ * This is a data class represents the response from a network request.
+ *
+ * @property body The body of the response, represented as a ByteArray.
+ * @property length The length of the response body.
+ * @property httpCode The HTTP status code of the response.
+ * @property headers The headers of the response, represented as a Map where the key is the header name and the value is
+ * the header value.
+ * @property error An optional KlopikException that represents any error that occurred while making the request.
+ */
 @OptIn(ExperimentalForeignApi::class)
 data class Response(
     val body: ByteArray,
     val length: Int,
     val httpCode: Short,
-    val headers: Map<String, Any>,
+    val headers: Map<String, String>,
     val error: KlopikException?
 ) {
     val text = body.toKString()
