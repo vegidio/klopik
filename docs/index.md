@@ -1,6 +1,6 @@
-# ffmpeg-kmp
+# klopik
 
-**ffmpeg-kmp** is a [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template) to let you use FFmpeg in your Kotlin Multiplatform projects.
+**klopik** is a [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template) to let you use Klopik in your Kotlin Multiplatform projects.
 
 It supports the following targets/platforms:
 

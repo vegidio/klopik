@@ -1,12 +1,12 @@
 # Project information
 site_name: Universal Media Downloader
-site_url: https://vegidio.github.io/ffmpeg-kmp
+site_url: https://vegidio.github.io/klopik
 site_author: Vinicius Egidio
 site_description: A KMP library to easily extract links from media files hosted on popular websites.
 
 # Repository
-repo_name: vegidio/ffmpeg-kmp
-repo_url: https://github.com/vegidio/ffmpeg-kmp
+repo_name: vegidio/klopik
+repo_url: https://github.com/vegidio/klopik
 
 # Copyright
 copyright: Copyright &copy; 2024 <a href="https://vinicius.io" target="_blank">Vinicius Egidio</a>

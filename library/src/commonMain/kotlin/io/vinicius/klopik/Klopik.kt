@@ -29,9 +29,14 @@ class Klopik {
             method: Method,
             url: String,
             body: String? = null,
-            headers: Map<String, Any>? = null
+            headers: Map<String, String>? = null
         ): Response {
-            val result = klopik.Request(method.value.cstr, url.cstr, body?.cstr, null)
+            val result = klopik.Request(
+                method = method.value.cstr,
+                url = url.cstr,
+                body = body?.cstr,
+                headers = headers?.let { serializeHeaders(it).cstr }
+            )
 
             return result.useContents {
                 val byteArray = try {
@@ -41,13 +46,14 @@ class Klopik {
                 }
 
                 val error = r4?.toKString()
+                val resHeaders = r3?.let { deserializeHeaders(it.toKString()) }
 
                 Response(
                     body = byteArray,
                     length = r1,
                     httpCode = r2.toShort(),
-                    headers = emptyMap(),
-                    error = error?.let { KlopikException(it) }
+                    headers = resHeaders ?: emptyMap(),
+                    error = error?.let { KlopikException(url, it) }
                 )
             }
         }
@@ -67,7 +73,7 @@ class Klopik {
         fun get(
             url: String,
             body: String? = null,
-            headers: Map<String, Any>? = null
+            headers: Map<String, String>? = null
         ): Response = request(Method.Get, url, body, headers)
 
         /**
@@ -85,7 +91,7 @@ class Klopik {
         fun post(
             url: String,
             body: String? = null,
-            headers: Map<String, Any>? = null
+            headers: Map<String, String>? = null
         ): Response = request(Method.Post, url, body, headers)
     }
 }

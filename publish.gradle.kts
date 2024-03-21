@@ -3,7 +3,7 @@ configure<PublishingExtension> {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/vegidio/ffmpeg-kmp")
+                url = uri("https://maven.pkg.github.com/vegidio/klopik")
                 credentials {
                     username = System.getenv("GITHUB_ACTOR")
                     password = System.getenv("GITHUB_TOKEN")
@@ -14,7 +14,7 @@ configure<PublishingExtension> {
         all {
             getByName<MavenPublication>(name) {
                 val newArtifact = when {
-                    name == "kotlinMultiplatform" -> "ffmpeg"
+                    name == "kotlinMultiplatform" -> "klopik"
                     name.contains("android") -> "android"
                     else -> name.lowercase()
                 }

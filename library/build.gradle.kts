@@ -28,6 +28,7 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.coroutines.core)
             implementation(libs.kermit)
+            implementation(libs.kotlin.serialization)
             implementation(libs.okio)
             implementation(libs.slf4j)
         }

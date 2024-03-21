@@ -1,6 +1,6 @@
 # Universal Media Downloader
 
-**ffmpeg-kmp** is a [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template) to easily extract links from media files hosted on popular websites.
+**klopik** is a [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template) to easily extract links from media files hosted on popular websites.
 
 It supports the following targets/platforms:
 
@@ -8,7 +8,7 @@ It supports the following targets/platforms:
 
 ## ⬇️ Installation
 
-**ffmpeg-kmp** is hosted in my own Maven repository, so before using it in your project you must add the repository `https://maven.vinicius.io` to your `settings.gradle.kts` file:
+**klopik** is hosted in my own Maven repository, so before using it in your project you must add the repository `https://maven.vinicius.io` to your `settings.gradle.kts` file:
 
 ```kotlin
 dependencyResolutionManagement {
@@ -24,17 +24,17 @@ With the repository added, you just need to include the dependency in the file `
 
 ```kotlin
 dependencies {
-    implementation("io.vinicius.ffmpeg:ffmpeg:{{ version }}")
+    implementation("io.vinicius.klopik:klopik:{{ version }}")
 }
 ```
 
 ## 🤖 Usage
 
-Please visit the library's [website](https://vegidio.github.io/ffmpeg-kmp) to find detailed instructions on how to use it in your project.
+Please visit the library's [website](https://vegidio.github.io/klopik) to find detailed instructions on how to use it in your project.
 
 ## 📝 License
 
-**ffmpeg-kmp** is released under the MIT License. See [LICENSE](LICENSE) for details.
+**klopik** is released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 👨🏾‍💻 Author
 

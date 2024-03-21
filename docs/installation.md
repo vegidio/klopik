@@ -1,6 +1,6 @@
 # Installation
 
-**ffmpeg-kmp** is hosted in my own Maven repository, so before using it in your project you must add the repository `https://maven.vinicius.io` to your `settings.gradle.kts` file:
+**klopik** is hosted in my own Maven repository, so before using it in your project you must add the repository `https://maven.vinicius.io` to your `settings.gradle.kts` file:
 
 ```kotlin title="settings.gradle.kts" linenums="1" hl_lines="5"
 dependencyResolutionManagement {
@@ -16,6 +16,6 @@ With the repository added, you just need to include the dependency in the file `
 
 ```kotlin title="build.gradle.kts" linenums="1"
 dependencies {
-    implementation("io.vinicius.ffmpeg:ffmpeg:{{ version }}")
+    implementation("io.vinicius.klopik:klopik:{{ version }}")
 }
 ```

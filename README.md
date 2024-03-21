@@ -1,6 +1,6 @@
-# ffmpeg-kmp
+# klopik
 
-**ffmpeg-kmp** is a [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template) to let you use FFmpeg in your Kotlin Multiplatform projects.
+**klopik** is a [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template) to let you use Klopik in your Kotlin Multiplatform projects.
 
 It supports the following targets/platforms:
 
@@ -8,7 +8,7 @@ It supports the following targets/platforms:
 
 ## ⬇️ Installation
 
-**ffmpeg-kmp** is hosted in my own Maven repository, so before using it in your project you must add the repository `https://maven.vinicius.io` to your `settings.gradle.kts` file:
+**klopik** is hosted in my own Maven repository, so before using it in your project you must add the repository `https://maven.vinicius.io` to your `settings.gradle.kts` file:
 
 ```kotlin
 dependencyResolutionManagement {
@@ -24,17 +24,17 @@ With the repository added, you just need to include the dependency in the file `
 
 ```kotlin
 dependencies {
-    implementation("io.vinicius.ffmpeg:ffmpeg:24.2.16")
+    implementation("io.vinicius.klopik:klopik:24.2.16")
 }
 ```
 
 ## 🤖 Usage
 
-Please visit the library's [website](https://vegidio.github.io/ffmpeg-kmp) to find detailed instructions on how to use it in your project.
+Please visit the library's [website](https://vegidio.github.io/klopik) to find detailed instructions on how to use it in your project.
 
 ## 📝 License
 
-**ffmpeg-kmp** is released under the MIT License. See [LICENSE](LICENSE) for details.
+**klopik** is released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 👨🏾‍💻 Author
 

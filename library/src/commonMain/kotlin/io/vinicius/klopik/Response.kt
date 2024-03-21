@@ -1,12 +1,18 @@
 package io.vinicius.klopik
 
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.toKString
+
+@OptIn(ExperimentalForeignApi::class)
 data class Response(
-    val body: ByteArray = byteArrayOf(),
-    val length: Int = 0,
-    val httpCode: Short = 0,
-    val headers: Map<String, Any> = emptyMap(),
-    val error: KlopikException? = null
+    val body: ByteArray,
+    val length: Int,
+    val httpCode: Short,
+    val headers: Map<String, Any>,
+    val error: KlopikException?
 ) {
+    val text = body.toKString()
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         other as Response

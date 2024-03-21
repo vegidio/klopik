@@ -1,3 +1,3 @@
 package io.vinicius.klopik
 
-class KlopikException(message: String): Exception(message)
+class KlopikException(url: String, message: String): Exception(message)
