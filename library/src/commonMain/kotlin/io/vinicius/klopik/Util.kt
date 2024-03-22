@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
  * @param headers A Map where each key is a header name and the value is the corresponding header value.
  * @return A JSON string of headers where each key is a header name and the value is the corresponding header value.
  */
-fun serializeHeaders(headers: Map<String, String>): String {
+internal fun serializeHeaders(headers: Map<String, String>): String {
     return Json.encodeToString(headers)
 }
 
@@ -20,7 +20,7 @@ fun serializeHeaders(headers: Map<String, String>): String {
  * @return A Map where each key is a header name and the value is a string of all header values for that key, joined by
  * commas.
  */
-fun deserializeHeaders(headers: String): Map<String, String> {
+internal fun deserializeHeaders(headers: String): Map<String, String> {
     val temp: Map<String, List<String>> = Json.decodeFromString(headers)
     return temp.mapValues { (_, value) -> value.joinToString(", ") }
 }
