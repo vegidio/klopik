@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.support.uppercaseFirstChar
-
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.ktlint)
@@ -15,7 +13,7 @@ kotlin {
         compilations.getByName("main").apply {
             cinterops {
                 val klopik by creating {
-                    defFile("src/macosMain/cinterop/klopik_amd64.def")
+                    defFile("src/macosX64Main/cinterop/klopik.def")
                     compilerOpts("-I" + rootProject.file("golang/lib"))
                     extraOpts("-libraryPath", rootProject.file("golang/lib"))
                 }
@@ -27,7 +25,7 @@ kotlin {
         compilations.getByName("main").apply {
             cinterops {
                 val klopik by creating {
-                    defFile("src/macosMain/cinterop/klopik_arm64.def")
+                    defFile("src/macosArm64Main/cinterop/klopik.def")
                     compilerOpts("-I" + rootProject.file("golang/lib"))
                     extraOpts("-libraryPath", rootProject.file("golang/lib"))
                 }
@@ -40,7 +38,7 @@ kotlin {
         compilations.getByName("main").apply {
             cinterops {
                 val klopik by creating {
-                    defFile("src/linuxMain/cinterop/klopik_amd64.def")
+                    defFile("src/linuxX64Main/cinterop/klopik.def")
                     compilerOpts("-I" + rootProject.file("golang/lib"))
                     extraOpts("-libraryPath", rootProject.file("golang/lib"))
                 }
@@ -52,7 +50,7 @@ kotlin {
         compilations.getByName("main").apply {
             cinterops {
                 val klopik by creating {
-                    defFile("src/linuxMain/cinterop/klopik_arm64.def")
+                    defFile("src/linuxArm64Main/cinterop/klopik.def")
                     compilerOpts("-I" + rootProject.file("golang/lib"))
                     extraOpts("-libraryPath", rootProject.file("golang/lib"))
                 }
@@ -65,7 +63,7 @@ kotlin {
         compilations.getByName("main").apply {
             cinterops {
                 val klopik by creating {
-                    defFile("src/mingwMain/cinterop/klopik_amd64.def")
+                    defFile("src/mingwX64Main/cinterop/klopik.def")
                     compilerOpts("-I" + rootProject.file("golang/lib"))
                     extraOpts("-libraryPath", rootProject.file("golang/lib"))
                 }
