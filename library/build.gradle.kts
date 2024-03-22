@@ -112,7 +112,7 @@ configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 }
 
 group = "io.vinicius.klopik"
-version = System.getenv("VERSION") ?: "1.0-SNAPSHOT"
+version = System.getenv("VERSION") ?: "SNAPSHOT"
 
 afterEvaluate {
     apply(from = "../publish.gradle.kts")

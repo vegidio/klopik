@@ -1,10 +1,9 @@
-name: build-static
+name: build
 
 on:
   push:
     tags:
       - '*'
-  workflow_dispatch:
 
 jobs:
   build-darwin:
@@ -109,7 +108,7 @@ jobs:
       - name: Fetch artifact
         uses: actions/download-artifact@v4
 
-      - name: Creating the ChangeLog
+      - name: Creating the Changelog
         run: |
           echo "Changes in this release:" > changelog.md
           git log $(git describe --tags --abbrev=0 \
@@ -123,3 +122,44 @@ jobs:
           bodyFile: changelog.md
           replacesArtifacts: true
           artifacts: "lib-*/*.zip"
+
+  publish:
+    runs-on: macos-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: [build-darwin, build-linux, build-windows]
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Restore the cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            ~/.konan
+          key: ${{ runner.os }}-build
+
+      - name: Fetch artifact
+        uses: actions/download-artifact@v4
+
+      - name: Move libraries
+        run: |
+          mkdir golang/lib
+          mv lib-*/* golang/lib
+          for z in golang/lib/*.zip; do unzip "$z" -d golang/lib/; done
+
+      - name: Publish package
+        run: |
+          export VERSION=${GITHUB_REF#refs/tags/}
+          ./gradlew publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
