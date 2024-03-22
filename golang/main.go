@@ -20,20 +20,20 @@ func main() {
 	//fmt.Println("Error", C.GoString(err))
 }
 
-// Request is a function that takes in four parameters: method, url, body, and headers.
-// It uses these parameters to create an HTTP request and send it to the specified URL.
+// Request is a function that sends an HTTP request and returns the response.
 //
-// Parameters:
-// method: a pointer to a C character representing the HTTP method (e.g., GET, POST).
-// url: a pointer to a C character representing the URL where the request will be sent.
-// body: a pointer to a C character representing the body of the request.
-// headers: a pointer to a C character representing the headers of the request.
+// It takes four parameters:
+// - method: a pointer to a C string representing the HTTP method (e.g., "GET", "POST").
+// - url: a pointer to a C string representing the URL to which the request will be sent.
+// - body: a pointer to a C string representing the body of the request.
+// - headers: a pointer to a C string representing the headers of the request.
 //
-// Returns:
-// The function returns three values:
-// - a pointer to an unsafe.Pointer representing the body of the response (or nil in case of an error),
-// - an integer representing the length of the body of the response (or 0 in case of an error),
-// - a pointer to a C character representing the error message (or nil if there is no error).
+// The function returns five values:
+// - a pointer to the body of the response (as an unsafe.Pointer),
+// - the length of the body (as a C integer),
+// - the HTTP status code of the response (as a C integer),
+// - a pointer to a C string representing the headers of the response,
+// - a pointer to a C string representing any error that occurred (or nil if no error occurred).
 //
 //export Request
 func Request(
@@ -42,20 +42,23 @@ func Request(
 	body *C.char,
 	headers *C.char) (unsafe.Pointer, C.int, C.int, *C.char, *C.char) {
 
+	// Sending request
 	gMethod := C.GoString(method)
 	gUrl := C.GoString(url)
 	request := createRequest(body, headers)
 	resp, err := request.Execute(gMethod, gUrl)
 
-	if err != nil {
-		cErr := C.CString(err.Error())
-		return nil, 0, 0, nil, cErr
-	}
-
+	// Extracting response
 	gBody := resp.Body()
 	cBody := C.CBytes(gBody)
 	cLength := C.int(len(gBody))
 	cHttpCode := C.int(resp.StatusCode())
 	cHeaders := getResponseHeaders(resp.Header())
+
+	if err != nil {
+		cErr := C.CString(err.Error())
+		return cBody, cLength, cHttpCode, cHeaders, cErr
+	}
+
 	return cBody, cLength, cHttpCode, cHeaders, nil
 }

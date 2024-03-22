@@ -1,3 +1,6 @@
 package io.vinicius.klopik
 
-class KlopikException(url: String, message: String): Exception(message)
+data class KlopikException(
+    val url: String,
+    override val message: String
+) : Exception()

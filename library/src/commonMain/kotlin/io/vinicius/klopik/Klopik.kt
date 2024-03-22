@@ -3,6 +3,14 @@ package io.vinicius.klopik
 import io.vinicius.klopik.model.RequestOptions
 import io.vinicius.klopik.model.Response
 
+/**
+ * The `Klopik` class is used to create an instance of an HTTP client with a base URL and default request options.
+ *
+ * @property baseUrl The base URL that will be prepended to all request URLs.
+ * @property options A lambda function that applies default request options to all requests.
+ *
+ * @constructor Creates a new `Klopik` instance with the specified base URL and default request options.
+ */
 class Klopik(
     private val baseUrl: String = "",
     private val options: RequestOptions.() -> Unit = {}
