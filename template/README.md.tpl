@@ -1,10 +1,10 @@
-# Universal Media Downloader
+# klopik
 
-**klopik** is a [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template) to easily extract links from media files hosted on popular websites.
+**Klopik** is a batteries-included HTTP client for [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template).
 
-It supports the following targets/platforms:
+It supports the following targets/platforms (more coming soon):
 
-![](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=macos&logoColor=white)
+![](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=macos&logoColor=white) ![](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![](https://img.shields.io/badge/Windows-0078D4?style=for-the-badge&logo=windows&logoColor=white)
 
 ## ⬇️ Installation
 
@@ -34,7 +34,7 @@ Please visit the library's [website](https://vegidio.github.io/klopik) to find d
 
 ## 📝 License
 
-**klopik** is released under the MIT License. See [LICENSE](LICENSE) for details.
+**Klopik** is released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 👨🏾‍💻 Author
 

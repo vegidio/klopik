@@ -1,10 +1,10 @@
 # klopik
 
-**klopik** is a [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template) to let you use Klopik in your Kotlin Multiplatform projects.
+**Klopik** is a batteries-included HTTP client for [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template).
 
-It supports the following targets/platforms:
+It supports the following targets/platforms (more coming soon):
 
-![](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=macos&logoColor=white)
+![](https://img.shields.io/badge/macOS-000000?style=for-the-badge&logo=macos&logoColor=white) ![](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![](https://img.shields.io/badge/Windows-0078D4?style=for-the-badge&logo=windows&logoColor=white)
 
 ## ⬇️ Installation
 
@@ -24,7 +24,7 @@ With the repository added, you just need to include the dependency in the file `
 
 ```kotlin
 dependencies {
-    implementation("io.vinicius.klopik:klopik:24.2.16")
+    implementation("io.vinicius.klopik:klopik:24.3.22")
 }
 ```
 
@@ -34,7 +34,7 @@ Please visit the library's [website](https://vegidio.github.io/klopik) to find d
 
 ## 📝 License
 
-**klopik** is released under the MIT License. See [LICENSE](LICENSE) for details.
+**Klopik** is released under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 👨🏾‍💻 Author
 
