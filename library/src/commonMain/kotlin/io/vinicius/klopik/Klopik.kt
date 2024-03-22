@@ -38,11 +38,13 @@ class Klopik(
         val funcOp = RequestOptions().apply(options)
         val mergedOptions: RequestOptions.() -> Unit = {
             body = funcOp.body ?: classOp.body
-            headers = funcOp.headers ?: classOp.headers
+            headers = funcOp.headers?.plus(classOp.headers.orEmpty())
             timeout = funcOp.timeout ?: classOp.timeout
+            retries = funcOp.retries ?: classOp.retries
+            retryWhen = funcOp.retryWhen ?: classOp.retryWhen ?: { _, _ -> true }
         }
 
-        return platformRequest(method, finalUrl, mergedOptions)
+        return Klopik.request(method, finalUrl, mergedOptions)
     }
 
     /**
@@ -157,8 +159,23 @@ class Klopik(
          * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
          * message.
          */
-        fun request(method: Method, url: String, options: RequestOptions.() -> Unit = {}) =
-            platformRequest(method, url, options)
+        fun request(
+            method: Method,
+            url: String,
+            options: RequestOptions.() -> Unit = {}
+        ): Response {
+            val op = RequestOptions().apply(options)
+            var response: Response
+            var attempt = 0
+
+            // Retry logic
+            do {
+                response = platformRequest(method, url, options)
+                val shouldRetry = attempt++ < (op.retries ?: 0) && op.retryWhen?.invoke(response, attempt) ?: true
+            } while (shouldRetry)
+
+            return response
+        }
 
         /**
          * Sends a GET request to the specified URL.

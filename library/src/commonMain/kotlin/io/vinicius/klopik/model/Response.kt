@@ -30,10 +30,10 @@ data class Response(
 
     /**
      * Checks if the HTTP status code of the response is within the range 200 to 299. This range is typically used to
-     * indicate successful HTTP requests. If the status code is within this range, 'ok' will be true. Otherwise, it will
-     * be false.
+     * indicate successful HTTP requests. If the status code is within this range, 'isOk' will be true. Otherwise, it
+     * will be false.
      */
-    val ok = httpCode in 200..299
+    val isOk = httpCode in 200..299
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

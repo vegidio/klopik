@@ -31,6 +31,6 @@ class KlopikTest {
     @Test
     fun `request to an non-existent URL is not OK`() {
         val response = klopik.request(Method.Get, "https://httpbin.org/status/404")
-        assertFalse(response.ok)
+        assertFalse(response.isOk)
     }
 }
