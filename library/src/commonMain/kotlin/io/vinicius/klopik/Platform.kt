@@ -8,3 +8,10 @@ internal expect fun platformRequest(
     url: String,
     options: RequestOptions.() -> Unit = {}
 ): Pair<Response, String?>
+
+internal expect fun platformStream(
+    method: Method,
+    url: String,
+    options: RequestOptions.() -> Unit = {},
+    stream: (ByteArray) -> Unit
+): Pair<Response, String?>

@@ -2,6 +2,13 @@ package main
 
 /*
 #include <stdlib.h>
+
+typedef void(*streamCallbackFunc)(void*, int);
+
+static inline void callStreamCallback(void* callback, void* chunk, int size) {
+    streamCallbackFunc cb = (streamCallbackFunc)callback;
+    cb(chunk, size);
+}
 */
 import "C"
 import (
@@ -107,7 +114,6 @@ func Stream(
 	cHeaders := getResponseHeaders(resp.Header)
 
 	buffer := make([]byte, 4096)
-	cb := *(*func(unsafe.Pointer, C.int))(callback)
 
 	for {
 		// Read a chunk of data
@@ -126,7 +132,7 @@ func Stream(
 		}
 
 		// Send the chunk to the callback
-		cb(C.CBytes(buffer), C.int(size))
+		C.callStreamCallback(callback, C.CBytes(buffer), C.int(size))
 	}
 
 	cLength := C.int(gLength)

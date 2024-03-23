@@ -1,10 +1,10 @@
-package io.vinicius.klopik
+package io.vinicius.klopik.exception
 
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
 
 @OptIn(ExperimentalForeignApi::class)
-data class KlopikException(
+data class HttpException(
     val url: String,
     val body: ByteArray,
     val length: Int,
@@ -20,7 +20,7 @@ data class KlopikException(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        other as KlopikException
+        other as HttpException
 
         if (url != other.url) return false
         if (!body.contentEquals(other.body)) return false
