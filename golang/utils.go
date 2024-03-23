@@ -6,41 +6,34 @@ package main
 import "C"
 
 import (
-	"encoding/json"
-	"fmt"
-	"github.com/go-resty/resty/v2"
+    "bytes"
+    "encoding/json"
+    "fmt"
+    "net/http"
 )
 
-var client = resty.New()
+func createRequest(method *C.char, url *C.char, body *C.char, headers *C.char) *http.Request {
+	gMethod := C.GoString(method)
+	gUrl := C.GoString(url)
+	var req *http.Request
 
-// createRequest is a function that creates a new resty.Request.
-// It takes two parameters: body and headers, both of which are pointers to C.char.
-// The body and headers are optional. If provided, they are set in the request.
-// The function returns a pointer to the created resty.Request.
-//
-// Parameters:
-//   - body: a pointer to a C.char that represents the body of the request. If it's not nil, it will be converted to a
-//     Go string and set in the request.
-//   - headers: a pointer to a C.char that represents the headers of the request in JSON format. If it's not nil, it
-//     will be converted to a Go string, unmarshalled to a map[string]string to be set in the request.
-//
-// Returns:
-//   - a pointer to the created resty.Request.
-func createRequest(body *C.char, headers *C.char) *resty.Request {
-	r := client.R()
-
-	if body != nil {
-		r = r.SetBody(getRequestBody(body))
+	// Body
+	if body == nil {
+		req, _ = http.NewRequest(gMethod, gUrl, nil)
+	} else {
+		gBody := []byte(C.GoString(body))
+		req, _ = http.NewRequest(gMethod, gUrl, bytes.NewBuffer(gBody))
 	}
+
+	// Headers
 	if headers != nil {
-		r = r.SetHeaders(getRequestHeaders(headers))
+		gHeaders := getRequestHeaders(headers)
+		for key, value := range gHeaders {
+			req.Header.Set(key, value)
+		}
 	}
 
-	return r
-}
-
-func getRequestBody(body *C.char) string {
-	return C.GoString(body)
+	return req
 }
 
 func getRequestHeaders(headers *C.char) map[string]string {

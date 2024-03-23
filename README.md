@@ -1,6 +1,6 @@
 # klopik
 
-**Klopik** is a batteries-included HTTP client for [Kotlin Multiplatform library](https://github.com/Kotlin/multiplatform-library-template).
+**Klopik** is a batteries-included HTTP client for [Kotlin Multiplatform](https://github.com/Kotlin/multiplatform-library-template).
 
 It supports the following targets/platforms (more coming soon):
 
