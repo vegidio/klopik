@@ -2,8 +2,7 @@ package io.vinicius.klopik
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertIs
+import kotlin.test.assertFailsWith
 
 class KlopikTest {
     private val klopik = Klopik()
@@ -11,13 +10,7 @@ class KlopikTest {
     @Test
     fun `request with valid parameters returns expected response`() {
         val response = klopik.request(Method.Get, "https://httpbin.org/get")
-        assertEquals(200, response.httpCode)
-    }
-
-    @Test
-    fun `request with invalid URL throws exception`() {
-        val response = klopik.request(Method.Get, "invalid_url")
-        assertIs<KlopikException>(response.error)
+        assertEquals(200, response.statusCode)
     }
 
     @Test
@@ -25,12 +18,21 @@ class KlopikTest {
         val response = klopik.request(Method.Get, "https://httpbin.org/get") {
             headers = mapOf("Accept" to "application/json")
         }
-        assertEquals(200, response.httpCode)
+        assertEquals(200, response.statusCode)
     }
 
     @Test
-    fun `request to an non-existent URL is not OK`() {
-        val response = klopik.request(Method.Get, "https://httpbin.org/status/404")
-        assertFalse(response.isOk)
+    fun `request with invalid URL throws exception`() {
+        assertFailsWith<KlopikException> {
+            klopik.request(Method.Get, "invalid_url")
+        }
+    }
+
+    @Test
+    fun `request to an non-existent URL throws exception`() {
+        val exception = assertFailsWith<KlopikException> {
+            klopik.request(Method.Get, "https://httpbin.org/status/404")
+        }
+        assertEquals(404, exception.statusCode)
     }
 }

@@ -7,4 +7,4 @@ internal expect fun platformRequest(
     method: Method,
     url: String,
     options: RequestOptions.() -> Unit = {}
-): Response
+): Pair<Response, String?>

@@ -25,8 +25,7 @@ class Klopik(
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-     * message.
+     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
      */
     fun request(
         method: Method,
@@ -41,7 +40,8 @@ class Klopik(
             headers = funcOp.headers?.plus(classOp.headers.orEmpty())
             timeout = funcOp.timeout ?: classOp.timeout
             retries = funcOp.retries ?: classOp.retries
-            retryWhen = funcOp.retryWhen ?: classOp.retryWhen ?: { _, _ -> true }
+            retryWhen = funcOp.retryWhen ?: classOp.retryWhen
+            validate = funcOp.validate ?: classOp.validate
         }
 
         return Klopik.request(method, finalUrl, mergedOptions)
@@ -56,8 +56,7 @@ class Klopik(
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-     * message.
+     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
      */
     fun get(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Get, url, options)
 
@@ -70,8 +69,7 @@ class Klopik(
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-     * message.
+     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
      */
     fun post(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Post, url, options)
 
@@ -84,8 +82,7 @@ class Klopik(
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-     * message.
+     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
      */
     fun put(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Put, url, options)
 
@@ -98,8 +95,7 @@ class Klopik(
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-     * message.
+     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
      */
     fun delete(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Delete, url, options)
 
@@ -112,8 +108,7 @@ class Klopik(
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-     * message.
+     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
      */
     fun patch(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Patch, url, options)
 
@@ -126,8 +121,7 @@ class Klopik(
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-     * message.
+     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
      */
     fun head(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Head, url, options)
 
@@ -140,8 +134,7 @@ class Klopik(
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-     * message.
+     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
      */
     fun options(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Options, url, options)
 
@@ -156,8 +149,7 @@ class Klopik(
          *
          * @return A `Response` object containing the response from the server.
          *
-         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-         * message.
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
          */
         fun request(
             method: Method,
@@ -166,13 +158,32 @@ class Klopik(
         ): Response {
             val op = RequestOptions().apply(options)
             var response: Response
+            var error: String?
             var attempt = 0
 
             // Retry logic
+            val retries = op.retries ?: 0
+            val retryWhen = op.retryWhen ?: { _, _ -> true }
+
             do {
-                response = platformRequest(method, url, options)
-                val shouldRetry = attempt++ < (op.retries ?: 0) && op.retryWhen?.invoke(response, attempt) ?: true
+                val (r, e) = platformRequest(method, url, options)
+                response = r
+                error = e
+                val shouldRetry = attempt++ < retries && retryWhen(response, attempt)
             } while (shouldRetry)
+
+            // Validate the response
+            val isValid = op.validate ?: { it.statusCode in 200..299 }
+            if (!isValid(response)) {
+                throw KlopikException(
+                    url = url,
+                    body = response.body,
+                    length = response.length,
+                    statusCode = response.statusCode,
+                    headers = response.headers,
+                    message = error ?: "The response did not pass the validation check."
+                )
+            }
 
             return response
         }
@@ -186,8 +197,7 @@ class Klopik(
          *
          * @return A `Response` object containing the response from the server.
          *
-         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-         * message.
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
          */
         fun get(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Get, url, options)
 
@@ -200,8 +210,7 @@ class Klopik(
          *
          * @return A `Response` object containing the response from the server.
          *
-         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-         * message.
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
          */
         fun post(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Post, url, options)
 
@@ -214,8 +223,7 @@ class Klopik(
          *
          * @return A `Response` object containing the response from the server.
          *
-         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-         * message.
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
          */
         fun put(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Put, url, options)
 
@@ -228,8 +236,7 @@ class Klopik(
          *
          * @return A `Response` object containing the response from the server.
          *
-         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-         * message.
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
          */
         fun delete(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Delete, url, options)
 
@@ -242,8 +249,7 @@ class Klopik(
          *
          * @return A `Response` object containing the response from the server.
          *
-         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-         * message.
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
          */
         fun patch(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Patch, url, options)
 
@@ -256,8 +262,7 @@ class Klopik(
          *
          * @return A `Response` object containing the response from the server.
          *
-         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-         * message.
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown..
          */
         fun head(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Head, url, options)
 
@@ -270,8 +275,7 @@ class Klopik(
          *
          * @return A `Response` object containing the response from the server.
          *
-         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown with the error
-         * message.
+         * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown..
          */
         fun options(url: String, options: RequestOptions.() -> Unit = {}) = request(Method.Options, url, options)
     }

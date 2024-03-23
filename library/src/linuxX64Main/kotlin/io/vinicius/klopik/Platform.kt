@@ -17,7 +17,7 @@ internal actual fun platformRequest(
     method: Method,
     url: String,
     options: RequestOptions.() -> Unit
-): Response {
+): Pair<Response, String?> {
     val op = RequestOptions().apply(options)
     val result = klopik.Request(
         method = method.value.cstr,
@@ -35,13 +35,13 @@ internal actual fun platformRequest(
 
         val error = r4?.toKString()
         val resHeaders = r3?.let { deserializeHeaders(it.toKString()) }
-
-        Response(
+        val response = Response(
             body = byteArray,
             length = r1,
-            httpCode = r2.toShort(),
-            headers = resHeaders ?: emptyMap(),
-            error = error?.let { KlopikException(url, it) }
+            statusCode = r2.toShort(),
+            headers = resHeaders ?: emptyMap()
         )
+
+        Pair(response, error)
     }
 }

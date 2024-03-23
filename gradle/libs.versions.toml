@@ -10,7 +10,6 @@ kotlin = "1.9.21"
 ktlint = "12.0.3"
 okio = "3.8.0"
 serialization = "1.6.3"
-skie = "0.6.1"
 slf4j = "2.0.11"
 
 [plugins]
@@ -19,7 +18,6 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
-skie = { id = "co.touchlab.skie", version.ref = "skie" }
 
 [libraries]
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -29,5 +27,4 @@ kotlin-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", 
 kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
 okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
-skie-annotations = { group = "co.touchlab.skie", name = "configuration-annotations", version.ref = "skie" }
 slf4j = { group = "org.slf4j", name = "slf4j-nop", version.ref = "slf4j" }

@@ -3,6 +3,7 @@ package io.vinicius.klopik.model
 import kotlin.time.Duration
 
 typealias RetryWhen = (response: Response, attempt: Int) -> Boolean
+typealias Validate = (response: Response) -> Boolean
 
 /**
  * Data class representing the options for a request.
@@ -13,11 +14,14 @@ typealias RetryWhen = (response: Response, attempt: Int) -> Boolean
  * @property retries The number of retries for the request. This can be null if there are no retries specified.
  * @property retryWhen A predicate that determines when to retry the request. If this is null, the request will be
  * retried as long as the number of attempts is less or equal than the number of retries.
+ * @property validate A predicate that validates the response. If this is null, the response will be considered valid if
+ * the status code is between the range 200-299.
  */
 data class RequestOptions(
     var body: String? = null,
     var headers: Map<String, String>? = null,
     var timeout: Duration? = null,
     var retries: Int? = null,
-    var retryWhen: RetryWhen? = null
+    var retryWhen: RetryWhen? = null,
+    var validate: Validate? = null
 )
