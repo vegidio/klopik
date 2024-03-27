@@ -151,15 +151,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Restore the cache
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/.konan
-          key: ${{ runner.os }}-build
-
       - name: Fetch artifact
         uses: actions/download-artifact@v4
 

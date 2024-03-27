@@ -1,4 +1,2 @@
 headers = klopik_linux_arm64.h
 staticLibraries = klopik_linux_arm64.a
-compilerOpts = -framework Security
-linkerOpts = -framework Security
