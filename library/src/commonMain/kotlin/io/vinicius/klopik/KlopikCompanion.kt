@@ -4,8 +4,6 @@ import io.vinicius.klopik.exception.HttpException
 import io.vinicius.klopik.model.RequestOptions
 import io.vinicius.klopik.model.Response
 
-typealias StreamCallback = (ByteArray) -> Unit
-
 /**
  * Sends a request to the specified URL with the specified method and options.
  *
@@ -13,10 +11,12 @@ typealias StreamCallback = (ByteArray) -> Unit
  * @param url The URL to send the request to.
  * @param options A lambda function with the request options. This object is used to specify the body, headers and other
  * request parameters (optional).
+ * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+ * (optional).
  *
  * @return A `Response` object containing the response from the server.
  *
- * @throws HttpException If there is an error with the request, a `KlopikException` is thrown.
+ * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
  */
 fun Klopik.Companion.request(
     method: Method,
@@ -34,7 +34,12 @@ fun Klopik.Companion.request(
     val retryWhen = op.retryWhen ?: { _, _ -> true }
 
     do {
-        val (r, e) = if (stream == null) platformRequest(method, url, options) else platformStream(method, url, options, stream)
+        val (r, e) = if (stream == null) {
+            platformRequest(method, url, options)
+        } else {
+            platformStream(method, url, options, stream)
+        }
+
         response = r
         error = e
         val shouldRetry = attempt++ < retries && retryWhen(response, attempt)
@@ -62,10 +67,12 @@ fun Klopik.Companion.request(
  * @param url The URL to send the request to.
  * @param options A lambda function with the request options. This object is used to specify the body, headers and other
  * request parameters (optional).
+ * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+ * (optional).
  *
  * @return A `Response` object containing the response from the server.
  *
- * @throws HttpException If there is an error with the request, a `KlopikException` is thrown.
+ * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
  */
 fun Klopik.Companion.get(
     url: String,
@@ -79,10 +86,12 @@ fun Klopik.Companion.get(
  * @param url The URL to send the request to.
  * @param options A lambda function with the request options. This object is used to specify the body, headers and other
  * request parameters (optional).
+ * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+ * (optional).
  *
  * @return A `Response` object containing the response from the server.
  *
- * @throws HttpException If there is an error with the request, a `KlopikException` is thrown.
+ * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
  */
 fun Klopik.Companion.post(
     url: String,
@@ -96,10 +105,12 @@ fun Klopik.Companion.post(
  * @param url The URL to send the request to.
  * @param options A lambda function with the request options. This object is used to specify the body, headers and other
  * request parameters (optional).
+ * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+ * (optional).
  *
  * @return A `Response` object containing the response from the server.
  *
- * @throws HttpException If there is an error with the request, a `KlopikException` is thrown.
+ * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
  */
 fun Klopik.Companion.put(
     url: String,
@@ -113,10 +124,12 @@ fun Klopik.Companion.put(
  * @param url The URL to send the request to.
  * @param options A lambda function with the request options. This object is used to specify the body, headers and other
  * request parameters (optional).
+ * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+ * (optional).
  *
  * @return A `Response` object containing the response from the server.
  *
- * @throws HttpException If there is an error with the request, a `KlopikException` is thrown.
+ * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
  */
 fun Klopik.Companion.delete(
     url: String,
@@ -130,10 +143,12 @@ fun Klopik.Companion.delete(
  * @param url The URL to send the request to.
  * @param options A lambda function with the request options. This object is used to specify the body, headers and other
  * request parameters (optional).
+ * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+ * (optional).
  *
  * @return A `Response` object containing the response from the server.
  *
- * @throws HttpException If there is an error with the request, a `KlopikException` is thrown.
+ * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
  */
 fun Klopik.Companion.patch(
     url: String,
@@ -147,10 +162,12 @@ fun Klopik.Companion.patch(
  * @param url The URL to send the request to.
  * @param options A lambda function with the request options. This object is used to specify the body, headers and other
  * request parameters (optional).
+ * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+ * (optional).
  *
  * @return A `Response` object containing the response from the server.
  *
- * @throws HttpException If there is an error with the request, a `KlopikException` is thrown..
+ * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
  */
 fun Klopik.Companion.head(
     url: String,
@@ -164,10 +181,12 @@ fun Klopik.Companion.head(
  * @param url The URL to send the request to.
  * @param options A lambda function with the request options. This object is used to specify the body, headers and other
  * request parameters (optional).
+ * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+ * (optional).
  *
  * @return A `Response` object containing the response from the server.
  *
- * @throws HttpException If there is an error with the request, a `KlopikException` is thrown..
+ * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
  */
 fun Klopik.Companion.options(
     url: String,

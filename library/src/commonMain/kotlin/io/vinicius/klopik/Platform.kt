@@ -13,5 +13,5 @@ internal expect fun platformStream(
     method: Method,
     url: String,
     options: RequestOptions.() -> Unit = {},
-    stream: (ByteArray) -> Unit
+    stream: StreamCallback
 ): Pair<Response, String?>

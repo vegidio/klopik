@@ -22,10 +22,12 @@ class Klopik(
      * @param url The URL to send the request to.
      * @param options A lambda function with the request options. This object is used to specify the body, headers
      * and other request parameters (optional).
+     * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+     * (optional).
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
+     * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
      */
     fun request(
         method: Method,
@@ -54,10 +56,12 @@ class Klopik(
      * @param url The URL to send the request to.
      * @param options A lambda function with the request options. This object is used to specify the body, headers
      * and other request parameters (optional).
+     * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+     * (optional).
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
+     * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
      */
     fun get(
         url: String,
@@ -71,10 +75,12 @@ class Klopik(
      * @param url The URL to send the request to.
      * @param options A lambda function with the request options. This object is used to specify the body, headers
      * and other request parameters (optional).
+     * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+     * (optional).
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
+     * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
      */
     fun post(
         url: String,
@@ -88,10 +94,12 @@ class Klopik(
      * @param url The URL to send the request to.
      * @param options A lambda function with the request options. This object is used to specify the body, headers
      * and other request parameters (optional).
+     * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+     * (optional).
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
+     * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
      */
     fun put(
         url: String,
@@ -105,10 +113,12 @@ class Klopik(
      * @param url The URL to send the request to.
      * @param options A lambda function with the request options. This object is used to specify the body, headers
      * and other request parameters (optional).
+     * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+     * (optional).
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
+     * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
      */
     fun delete(
         url: String,
@@ -122,10 +132,12 @@ class Klopik(
      * @param url The URL to send the request to.
      * @param options A lambda function with the request options. This object is used to specify the body, headers
      * and other request parameters (optional).
+     * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+     * (optional).
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
+     * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
      */
     fun patch(
         url: String,
@@ -139,10 +151,12 @@ class Klopik(
      * @param url The URL to send the request to.
      * @param options A lambda function with the request options. This object is used to specify the body, headers
      * and other request parameters (optional).
+     * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+     * (optional).
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
+     * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
      */
     fun head(
         url: String,
@@ -156,10 +170,12 @@ class Klopik(
      * @param url The URL to send the request to.
      * @param options A lambda function with the request options. This object is used to specify the body, headers
      * and other request parameters (optional).
+     * @param stream A stream callback function. If provided, the request body will be streamed using this callback
+     * (optional).
      *
      * @return A `Response` object containing the response from the server.
      *
-     * @throws KlopikException If there is an error with the request, a `KlopikException` is thrown.
+     * @throws HttpException If there is an error with the request, a `HttpException` is thrown.
      */
     fun options(
         url: String,

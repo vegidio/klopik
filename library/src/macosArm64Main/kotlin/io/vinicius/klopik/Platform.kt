@@ -54,14 +54,11 @@ internal actual fun platformStream(
     options: RequestOptions.() -> Unit,
     stream: StreamCallback
 ): Pair<Response, String?> {
-    val cCallback = staticCFunction { chunk: COpaquePointer?, size: Int ->
-        val byteArray = try {
-            ByteArray(size).apply { usePinned { memcpy(it.addressOf(0), chunk, size.convert()) } }
-        } catch (_: Exception) {
-            byteArrayOf()
-        }
+    // Set the stream callback
+    CallbackHandler.setStreamCallback(stream)
 
-        stream(byteArray)
+    val cCallback = staticCFunction { chunk: COpaquePointer?, size: Int ->
+        CallbackHandler.handleStream(chunk, size)
     }
 
     val op = RequestOptions().apply(options)
@@ -73,7 +70,7 @@ internal actual fun platformStream(
         callback = cCallback
     )
 
-    return result.useContents {
+    val response = result.useContents {
         val error = r3?.toKString()
         val resHeaders = r2?.let { deserializeHeaders(it.toKString()) }
         val response = Response(
@@ -85,4 +82,9 @@ internal actual fun platformStream(
 
         Pair(response, error)
     }
+
+    // Clear the stream callback to prevent memory leaks
+    CallbackHandler.clearStreamCallback()
+
+    return response
 }
