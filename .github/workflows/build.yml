@@ -49,6 +49,15 @@ jobs:
           name: lib-darwin
           path: golang/lib/*.zip
 
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run Tests
+        run: ./gradlew macosX64Test
+
   build-linux:
     runs-on: ubuntu-latest
     steps:
@@ -79,6 +88,15 @@ jobs:
           name: lib-linux
           path: golang/lib/*.zip
 
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run Tests
+        run: ./gradlew linuxX64Test
+
   build-windows:
     runs-on: windows-latest
     steps:
@@ -104,6 +122,15 @@ jobs:
         with:
           name: lib-windows
           path: golang/lib/*.zip
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run Tests
+        run: ./gradlew mingwX64Test
 
   release:
     runs-on: ubuntu-latest
