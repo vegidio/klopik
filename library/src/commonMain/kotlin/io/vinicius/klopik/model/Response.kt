@@ -2,9 +2,10 @@ package io.vinicius.klopik.model
 
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.toKString
+import kotlinx.serialization.json.Json
 
 /**
- * This is a data class represents the response from a network request.
+ * This data class represents the response from a network request.
  *
  * @property body The body of the response, represented as a ByteArray.
  * @property length The length of the response body.
@@ -24,6 +25,16 @@ data class Response(
      * response body is expected to be text.
      */
     val text = body.toKString()
+
+    /**
+     * This function is used to deserialize the JSON response body into an object of type `T`.
+     * The function is inline and reified, which means it can safely use the generic type `T` at runtime.
+     *
+     * @return An object of type `T` that represents the deserialized JSON response body.
+     * @throws kotlinx.serialization.SerializationException If the given JSON string cannot be deserialized into an
+     * object of type `T`.
+     */
+    inline fun <reified T> deserialize(): T = Json.decodeFromString(text)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
